@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wifisense"
+version = "0.1.0"
+description = "Wi-Fi CSI based room presence detection (ESP32)"
+requires-python = ">=3.9"
+dependencies = ["numpy>=1.22"]
+
+[project.optional-dependencies]
+serial = ["pyserial>=3.5"]
+dev = ["pytest>=7", "pyserial>=3.5"]
+
+[project.scripts]
+wifisense = "wifisense.cli:main"
+
+[tool.setuptools]
+packages = ["wifisense"]
