@@ -1,0 +1,15 @@
+{
+  "zones": {
+    "F1-AP-North": "Floor 1 - North wing",
+    "F1-AP-South": "Floor 1 - South wing",
+    "f0:9f:c2:00:00:01": "Floor 2 - Reception"
+  },
+  "people": {
+    "aa:bb:cc:dd:ee:01": "Chady"
+  },
+  "ignore": [
+    "11:22:33:44:55:66"
+  ],
+  "stale_s": 300,
+  "confirm_polls": 2
+}

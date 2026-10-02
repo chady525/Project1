@@ -70,6 +70,39 @@ The `demo` scenario is: empty 40 s, walk in, sit still 60 s, walk out, empty.
    wifisense run --source file:sitting.csi --baseline baseline.json --json
    ```
 
+## Zone occupancy from UniFi access points (no extra hardware)
+
+If you already run UniFi access points, `wifisense zones` asks the controller
+which access point every Wi-Fi device is connected to. It then reports how many
+devices are in each access point's area, and optionally who.
+
+**This tracks phones, not people.** It can't see anyone without a device on
+the Wi-Fi, a phone left on a desk counts as a person, and locked phones
+(especially iPhones) go quiet for minutes. Resolution is one access point's
+coverage area, usually several rooms, never a single room unless each room has
+its own access point. Phones on mobile data are invisible to it.
+
+```bash
+export UNIFI_URL=https://192.168.1.1     # Dream Machine / UDR / Cloud Key; classic controllers use :8443
+export UNIFI_USER=presence               # a LOCAL read-only account, not your UI.com login
+export UNIFI_PASS=...
+wifisense aps                            # list access points with client counts
+wifisense zones                          # print occupancy per zone whenever it changes
+wifisense zones --config zones.json --json --webhook http://homeassistant.local:8123/api/webhook/zones
+```
+
+Zones default to the access point names set in the UniFi app, so naming them
+by area ("F1 North wing") is often all the setup you need.
+`zones.example.json` shows how to rename zones, map device MACs to people,
+and ignore fixed devices (printers, TVs) that would otherwise inflate counts.
+A device has to show up on a new access point on two polls in a row before it
+counts as having moved, which stops it flickering between two zones near
+doorways.
+
+**Before naming people:** tracking identifiable staff or visitors by their
+phones is personal-data processing in most jurisdictions. Get consent or give
+clear notice, or stick to anonymous counts (no `people` map).
+
 ## Known limits
 
 * **All validation so far is on synthetic data.** The simulator has no
